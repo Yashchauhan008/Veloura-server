@@ -1,39 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config(); 
-const app = express();
+require('dotenv').config();
 const cors = require('cors');
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
 const fileUpload = require('express-fileupload');
-const cloudinary = require('./cloudinaryConfig');
+const videoRoutes = require('./routes/videoRoute');
 const userRoutes = require('./routes/UserRoute');
 
-// Middleware - CORRECT ORDER
-app.use(cors({
-    origin: true,
-    credentials: true
-}));
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI;
+
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(fileUpload({
     useTempFiles: true,
-    tempFileDir: '/tmp/'
+    tempFileDir: './tmp/'
 }));
 
-// Routes
-app.use('/api/user', userRoutes);
+app.use('/api/video', videoRoutes);
+app.use('api/user',userRoutes)
 
-// MongoDB
 mongoose.connect(MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.log('Error connecting to MongoDB:', err));
+    .then(() => console.log('✅ MongoDB connected'))
+    .catch((err) => console.log('❌ MongoDB connection error:', err));
 
-// Sample route
 app.get('/', (req, res) => {
-    res.send('Welcome to veloura API');
+    res.send('API Working ✅');
 });
 
-// Start server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });

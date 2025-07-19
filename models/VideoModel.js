@@ -10,7 +10,6 @@ const videoSchema = new mongoose.Schema({
     thumbnailUrl: { type: String, default: '' },
     uploader: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    comments: [commentSchema],
     views: { type: Number, default: 0 },
     accessLevel: {
         type: String,
