@@ -90,6 +90,30 @@ exports.updateUser = async (req, res) => {
     }
 };
 
+// exports.deleteVideo = async (req, res) => {
+//     const { videoId } = req.params;
+//     const userId = req.query.userId;  // 👈 UserID comes from the query string (you can also use token later)
+
+//     try {
+//         const video = await Video.findById(videoId);
+
+//         if (!video) {
+//             return res.status(404).json({ message: 'Video not found' });
+//         }
+
+//         if (video.uploader.toString() !== userId) {
+//             return res.status(403).json({ message: 'You are not authorized to delete this video' });
+//         }
+
+//         await Video.findByIdAndDelete(videoId);
+//         res.status(200).json({ message: 'Video deleted successfully' });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Error deleting video' });
+//     }
+// }
+
+
 exports.feed = async (req, res) => {
 
     try {

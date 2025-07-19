@@ -7,6 +7,8 @@ router.post('/login', userController.loginUser);
 router.put('/update', userController.updateUser);
 router.get('/feed',userController.feed);
 router.get('/getUserHistory',userController.getUserHistory);
+// router.get('/delete/:videoId', userController.deleteVideo);
+
 
 
 

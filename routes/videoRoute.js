@@ -6,6 +6,10 @@ router.post('/upload-video', videoController.uploadVideo);
 router.get('/getVideoByUserID/:userId', videoController.getVideosByUserID);
 router.get('/getVideoByID/:videoId', videoController.getVideoByID);
 router.get('/personalizedFeed', videoController.personalizedFeed);
+router.get('/public-videos', videoController.getAllPublicVideos);
+
+
+
 
 
 module.exports = router;

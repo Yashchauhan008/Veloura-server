@@ -146,6 +146,25 @@ exports.personalizedFeed = async (req, res) => {
     }
 };
 
+exports.getAllPublicVideos = async (req, res) => {
+    try {
+        const publicVideos = await Video.find({ accessLevel: 'public' })
+            .populate('uploader', 'username avatar') // Fetch uploader username and avatar
+            .select('title description videoUrl thumbnailUrl views likes createdAt'); // Select only needed fields
+
+        res.status(200).json({ publicVideos });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching public videos.' });
+    }
+};
+
+
+exports.addComment = async(req,res)=>{
+    const { userId,user,content, description, tags, uploader, accessLevel } = req.body;
+
+};
+
 
 
 
