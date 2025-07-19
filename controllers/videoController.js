@@ -156,8 +156,7 @@ exports.getAllPublicVideos = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error fetching public videos.' });
-    }
-};
+    }};
 
 
 exports.addComment = async(req,res)=>{
