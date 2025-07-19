@@ -159,10 +159,6 @@ exports.getAllPublicVideos = async (req, res) => {
     }};
 
 
-exports.addComment = async(req,res)=>{
-    const { userId,user,content, description, tags, uploader, accessLevel } = req.body;
-
-};
 
 
 

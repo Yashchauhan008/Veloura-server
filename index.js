@@ -6,6 +6,8 @@ const fileUpload = require('express-fileupload');
 
 const videoRoutes = require('./routes/videoRoute');
 const userRoutes = require('./routes/UserRoute');  // 🔧 Correct casing (userRoute, not UserRoute)
+const commentRoutes = require('./routes/commentRoute');  // 🔧 Correct casing (userRoute, not UserRoute)
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,6 +32,7 @@ app.use(fileUpload({
 // ✅ API Routes
 app.use('/api/video', videoRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/comment',commentRoutes);
 
 
 // ✅ MongoDB Connection
