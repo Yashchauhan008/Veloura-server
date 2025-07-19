@@ -21,7 +21,7 @@ app.use(fileUpload({
 }));
 
 app.use('/api/video', videoRoutes);
-app.use('api/user',userRoutes)
+app.use('/api/user',userRoutes)
 
 mongoose.connect(MONGODB_URI)
     .then(() => console.log('✅ MongoDB connected'))
