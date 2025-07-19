@@ -90,7 +90,6 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-
 exports.feed = async (req, res) => {
 
     try {
@@ -108,7 +107,7 @@ exports.feed = async (req, res) => {
         }));
 
         res.status(200).json({
-            message: 'User updated successfully',
+            message: 'feed fatched successfully',
             feed: videoData
         });
 
@@ -118,6 +117,31 @@ exports.feed = async (req, res) => {
         res.status(500).json({ error: 'Error fatching video' });
     }
 };
+
+// In userController.js
+exports.getUserHistory = async (req, res) => {
+    const userId = req.query.userId;
+    try {
+        const user = await User.findById(userId)
+            .populate('historyVideo', 'title thumbnailUrl views uploader')
+            .populate({
+                path: 'historyVideo',
+                populate: { path: 'uploader', select: 'username' },
+            });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ history: user.historyVideo });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching user history' });
+    }
+};
+
+
+
 
 
 

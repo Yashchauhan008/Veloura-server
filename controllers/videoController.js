@@ -1,6 +1,8 @@
 const cloudinary = require('../cloudinaryConfig');
 const fs = require('fs');
 const Video = require('../models/VideoModel');
+const User = require('../models/UserModel');
+
 
 
 exports.uploadVideo = async (req, res) => {
@@ -70,23 +72,81 @@ exports.getVideosByUserID = async (req, res) => {
 
 // GET /api/video/:videoId
 exports.getVideoByID = async (req, res) => {
-    const videoId = req.params.videoId;
+        const videoId = req.params.videoId;
+        const userId = req.query.userId; // Send userId as query param in the frontend request
+
+        try {
+            const video = await Video.findById(videoId).populate('uploader', 'username email');
+            if (!video) {
+                return res.status(404).json({ message: 'Video not found.' });
+            }
+
+            // 1️⃣ Increase view count
+            video.views += 1;
+            await video.save();
+
+            // 2️⃣ Update User History Videos
+            if (userId) {
+                const user = await User.findById(userId);
+                if (user) {
+                    // Remove if video already exists in history to avoid duplicates
+                    user.historyVideo = user.historyVideo.filter(id => id.toString() !== videoId);
+                    // Add the video at the beginning (most recent first)
+                    user.historyVideo.unshift(video._id);
+                    // Keep only the latest 5
+                    user.historyVideo = user.historyVideo.slice(0, 5);
+                    await user.save();
+                }
+            }
+
+            res.status(200).json({ video });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error fetching video.' });
+        }
+};
+
+
+exports.personalizedFeed = async (req, res) => {
+    const userId = req.query.userId;
+
     try {
-        const video = await Video.findById(videoId).populate('uploader', 'username email');
-        if (!video) {
-            return res.status(404).json({ message: 'Video not found.' });
+        const user = await User.findById(userId).populate('historyVideo');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const tagFrequency = {};
+        user.historyVideo.forEach(video => {
+            video.tags.forEach(tag => {
+                tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+            });
+        });
+
+        const sortedTags = Object.keys(tagFrequency).sort((a, b) => tagFrequency[b] - tagFrequency[a]);
+
+        let personalizedVideos = [];
+
+        if (sortedTags.length > 0) {
+            personalizedVideos = await Video.find({
+                accessLevel: "public",
+                tags: { $in: sortedTags }
+            }).populate('uploader', 'username')
+            .limit(20);
+        } else {
+            personalizedVideos = await Video.find({
+                accessLevel: "public"
+            }).populate('uploader', 'username')
+            .sort({ createdAt: -1 })
+            .limit(20);
         }
 
-        // Increment views
-        video.views += 1;
-        await video.save();
-
-        res.status(200).json({ video });
+        res.status(200).json({ videos: personalizedVideos });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error fetching video.' });
+        res.status(500).json({ message: 'Error generating personalized feed' });
     }
 };
+
+
 
 
 

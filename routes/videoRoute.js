@@ -5,6 +5,7 @@ const videoController = require('../controllers/videoController');
 router.post('/upload-video', videoController.uploadVideo);
 router.get('/getVideoByUserID/:userId', videoController.getVideosByUserID);
 router.get('/getVideoByID/:videoId', videoController.getVideoByID);
+router.get('/personalizedFeed', videoController.personalizedFeed);
 
 
 module.exports = router;

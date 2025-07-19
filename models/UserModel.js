@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     avatar: { type: String, default: '' },
     bio: { type: String, default: '' },
     subscriptionStatus: [subscriptionSchema],
+    historyVideo :[{type:mongoose.Schema.Types.ObjectId,ref:'Video'}],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
      role: {
