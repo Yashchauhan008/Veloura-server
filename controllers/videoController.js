@@ -2,6 +2,7 @@ const cloudinary = require('../cloudinaryConfig');
 const fs = require('fs');
 const Video = require('../models/VideoModel');
 
+
 exports.uploadVideo = async (req, res) => {
     try {
         if (!req.files || !req.files.video || !req.files.thumbnail) {
@@ -66,3 +67,26 @@ exports.getVideosByUserID = async (req, res) => {
         res.status(500).json({ message: 'Error fetching videos.' });
     }
 };
+
+// GET /api/video/:videoId
+exports.getVideoByID = async (req, res) => {
+    const videoId = req.params.videoId;
+    try {
+        const video = await Video.findById(videoId).populate('uploader', 'username email');
+        if (!video) {
+            return res.status(404).json({ message: 'Video not found.' });
+        }
+
+        // Increment views
+        video.views += 1;
+        await video.save();
+
+        res.status(200).json({ video });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching video.' });
+    }
+};
+
+
+
