@@ -10,6 +10,10 @@ exports.uploadVideo = async (req, res) => {
 
         const { title, description, tags, uploader, accessLevel } = req.body;
 
+        if (!uploader || uploader === "undefined") {
+            return res.status(400).json({ message: 'Uploader ID is required.' });
+        }
+
         const videoFile = req.files.video.tempFilePath;
         const videoResult = await cloudinary.uploader.upload(videoFile, {
             resource_type: 'video',
@@ -46,6 +50,7 @@ exports.uploadVideo = async (req, res) => {
         res.status(500).send('Upload failed.');
     }
 };
+
 
 
 exports.getVideosByUserID = async (req, res) => {

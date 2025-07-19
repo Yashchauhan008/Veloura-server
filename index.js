@@ -13,7 +13,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // ✅ CORS config for your frontend
 app.use(cors({
-  origin: ['https://veloura-client.onrender.com'],  // Your frontend URL (client, not backend/server)
+  origin: 'http://localhost:3000',  // Your frontend URL (client, not backend/server)
   credentials: true,
 }));
 
