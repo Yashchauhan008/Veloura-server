@@ -9,7 +9,4 @@ router.get('/personalizedFeed', videoController.personalizedFeed);
 router.get('/public-videos', videoController.getAllPublicVideos);
 
 
-
-
-
 module.exports = router;
