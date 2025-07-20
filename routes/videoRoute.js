@@ -7,6 +7,8 @@ router.get('/getVideoByUserID/:userId', videoController.getVideosByUserID);
 router.get('/getVideoByID/:videoId', videoController.getVideoByID);
 router.get('/personalizedFeed', videoController.personalizedFeed);
 router.get('/public-videos', videoController.getAllPublicVideos);
+router.get('/getpremium-videos', videoController.getAllPremiumVideos);
+
 
 
 module.exports = router;

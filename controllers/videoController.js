@@ -145,6 +145,25 @@ exports.personalizedFeed = async (req, res) => {
     }
 };
 
+exports.getAllPremiumVideos = async (req, res) => {
+    try {
+        const premiumVideos = await Video.find({ accessLevel: 'premium' }).populate('uploader', 'username email');
+        
+        return res.status(200).json({
+            success: true,
+            count: premiumVideos.length,
+            videos: premiumVideos
+        });
+    } catch (error) {
+        console.error('Error fetching premium videos:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server Error',
+            error: error.message
+        });
+    }
+};
+
 
 exports.getAllPublicVideos = async (req, res) => {
     try {

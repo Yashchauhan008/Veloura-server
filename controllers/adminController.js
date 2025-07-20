@@ -1,7 +1,7 @@
 // Add this to your existing userController.js
 const User = require('../models/UserModel');
 const Video = require('../models/VideoModel');
-git 
+
 exports.getAdminProfile = async (req, res) => {
     try {
         const adminId = req.query.adminId; // or get from JWT token
@@ -88,4 +88,35 @@ exports.updateAdminProfile = async (req, res) => {
         res.status(500).json({ message: 'Error updating admin profile' });
     }
 };
+
+
+
+exports.UpdateVideoToRestrict = async (req, res) => {
+    try {
+        const videoId = req.params.videoId;
+
+        const updatedVideo = await Video.findByIdAndUpdate(
+            videoId,
+            { accessLevel: 'restricted' },
+            { new: true }
+        );
+
+        if (!updatedVideo) {
+            return res.status(404).json({ message: 'Video not found' });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Video access level updated to restricted.',
+            video: updatedVideo
+        });
+    } catch (error) {
+        console.error('Error updating video access level:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: error.message
+        });
+    }
+}; 
 

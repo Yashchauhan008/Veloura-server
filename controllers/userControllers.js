@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
 const Video = require('../models/VideoModel');
 const jwt = require('jsonwebtoken');
+const { find } = require('../models/CommentModel');
 
 
 exports.registerUser = async (req, res) => {
@@ -181,6 +182,31 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+
+
+exports.updateUserToPremium =  async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { isPremiumUser: true },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json({
+            message: 'User has been upgraded to premium successfully.',
+            user: updatedUser
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Something went wrong', error });
+    }
+};
 
 
 
