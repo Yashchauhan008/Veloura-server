@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     avatar: { type: String, default: '' },
     bio: { type: String, default: '' },
-    subscriptionStatus: [subscriptionSchema],
+    isPremiumUser:{type:Boolean,default:false},
     historyVideo :[{type:mongoose.Schema.Types.ObjectId,ref:'Video'}],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

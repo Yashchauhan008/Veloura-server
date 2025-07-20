@@ -8,8 +8,9 @@ router.put('/update', userController.updateUser);
 router.get('/feed',userController.feed);
 router.get('/getUserHistory',userController.getUserHistory);
 router.delete('/delete/:videoId',userController.deleteVideo);
+router.get('/getAllUsers', userController.getAllUsers);
 
-// router.get('/delete/:videoId', userController.deleteVideo);
+
 
 
 

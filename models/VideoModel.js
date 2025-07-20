@@ -16,7 +16,6 @@ const videoSchema = new mongoose.Schema({
         enum: ['public', 'private', 'premium', 'restricted'],
         default: 'public'
     }
-    
 }, { timestamps: true });
 
 module.exports = mongoose.model('Video', videoSchema);

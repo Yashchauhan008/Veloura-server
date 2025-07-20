@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
 const Video = require('../models/VideoModel');
-
 const jwt = require('jsonwebtoken');
+
 
 exports.registerUser = async (req, res) => {
     const { username, email, password, role } = req.body;
@@ -113,7 +113,6 @@ exports.deleteVideo = async (req, res) => {
     }
 }
 
-
 exports.feed = async (req, res) => {
 
     try {
@@ -131,7 +130,7 @@ exports.feed = async (req, res) => {
         }));
 
         res.status(200).json({
-            message: 'feed fatched successfully',
+            message: 'feed fetched successfully',
             feed: videoData
         });
 
@@ -164,6 +163,23 @@ exports.getUserHistory = async (req, res) => {
     }
 };
 
+
+// Fetch all users with total count
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // Exclude password
+        const totalCount = await User.countDocuments();
+
+        res.status(200).json({
+            message: 'All users fetched successfully.',
+            totalCount,
+            users,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching users.' });
+    }
+};
 
 
 

@@ -55,7 +55,6 @@ exports.uploadVideo = async (req, res) => {
 };
 
 
-
 exports.getVideosByUserID = async (req, res) => {
     const userId = req.params.userId;
     try {
@@ -146,6 +145,7 @@ exports.personalizedFeed = async (req, res) => {
     }
 };
 
+
 exports.getAllPublicVideos = async (req, res) => {
     try {
         const publicVideos = await Video.find({ accessLevel: 'public' })
@@ -157,7 +157,6 @@ exports.getAllPublicVideos = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Error fetching public videos.' });
     }};
-
 
 
 
