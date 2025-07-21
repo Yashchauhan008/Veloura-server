@@ -15,10 +15,13 @@ const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // ✅ CORS config for your frontend
+// app.use(cors({
+//   origin: 'http://localhost:3000',  // Your frontend URL (client, not backend/server)
+//   credentials: true,
+// }));
 app.use(cors({
-  origin: 'http://localhost:3000',  // Your frontend URL (client, not backend/server)
-  credentials: true,
-}));
+    origin: ['https://veloura-backup.vercel.app', 'http://localhost:3000']
+  }));
 
 // ✅ Body parser
 app.use(express.json());
